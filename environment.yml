@@ -1,0 +1,3 @@
+name: logpp
+dependencies:
+        - python=0.0.1
