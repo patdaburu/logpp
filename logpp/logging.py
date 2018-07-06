@@ -10,11 +10,7 @@ This module contains the basic logging extensions.
 """
 from abc import ABC, abstractmethod
 import logging
-from typing import Dict, NamedTuple
-
-MESSAGE_SUMMARY_ATTR: str = \
-    '__summary__' \
-    #: key that holds summary information in :py:class:`LogppMessage` objects
+from typing import Any, NamedTuple
 
 
 class LogppMessage(NamedTuple):
@@ -22,13 +18,11 @@ class LogppMessage(NamedTuple):
     This is a logging record, suitable to pass on to a logger as the primary
     logging message.
     """
-    document: Dict  #: the document that contains the logging information
+    summary: str  #: the message summary
+    detail: Any  #: the message detail object
 
     def __str__(self):
-        try:
-            return self.document[MESSAGE_SUMMARY_ATTR]
-        except KeyError:
-            return str(self.document)
+        return self.summary
 
 
 class LogppHandler(logging.Handler, ABC):
@@ -58,21 +52,15 @@ class LogppHandler(logging.Handler, ABC):
 
         :param msg_: the logpp logging message
         """
-        pass
+        pass  # pragma: no cover
 
 
-def msg(summary: str, **kwargs) -> LogppMessage:
+def msg(summary: str, detail: Any) -> LogppMessage:
     """
     Create a logging record.
 
     :param summary: the principal summary of the logging event
-    :param kwargs: the additional logging data
+    :param detail: the message detail data object
     :return: a logging record
     """
-    # Create a document from the summary and keyword arguments.
-    document = {
-        **{MESSAGE_SUMMARY_ATTR: summary},
-        **kwargs
-    }
-    # Return the logging record.
-    return LogppMessage(document=document)
+    return LogppMessage(summary=summary, detail=detail)
