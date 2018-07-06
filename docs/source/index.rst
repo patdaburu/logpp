@@ -16,6 +16,7 @@ python logging extensions
    :maxdepth: 2
    :caption: Contents:
 
+   manual
    api
    requirements
 
