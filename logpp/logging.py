@@ -13,6 +13,38 @@ import logging
 from typing import Any, NamedTuple
 
 
+class LogppMixin(object):
+    """
+    This is a mixin that provides standard access to a logger via the
+    :py:func:`LogppMixin.logger` function.
+
+    The name of the logger reflect's the class name, though you can override
+    that by providing your class with a `__loggername__` attribute.
+    """
+    @classmethod
+    def logger(cls):
+        # If this method has been called before, the class should have a
+        # reference to its logger already.
+        try:
+            return getattr(cls, '__logger__')
+        except AttributeError:
+            # This is fine.  It just means we haven't created the logger yet.
+            pass
+        # Lets figure out what the name of the logger ought to be.  (If the
+        # class has a __loggername__ attribute, we'll use that.  Otherwise
+        # the logger's name is based on the class' module and name.)
+        logger_name = (
+            getattr(cls, '__loggername__') if hasattr(cls, '__loggername__')
+            else f'{cls.__module__}.{cls.__name__}'
+        )
+        # Create the logger and keep a reference in the class for future
+        # reference.
+        logger = logging.getLogger(logger_name)
+        setattr(cls, '__logger__', logger)
+        # Now we can give the logger back to the caller.
+        return logger
+
+
 class LogppMessage(NamedTuple):
     """
     This is a logging record, suitable to pass on to a logger as the primary

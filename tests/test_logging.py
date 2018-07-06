@@ -10,13 +10,12 @@ This module contains tests of the :py:mod:`logpp.logging` module.
 
 import logging
 import unittest
-from logpp.logging import LogppMessage, LogppHandler, msg
+from logpp.logging import LogppMessage, LogppMixin, LogppHandler, msg
 
 
-class TestLogppMessageSuite(unittest.TestCase):
+class TestLogppMessage(unittest.TestCase):
     """
-    This suite contains tests of the :py:class:`LogppMessage` class and the
-    :py:func:`msg` function.
+    Tests of the :py:class:`LogppMessage` class and the :py:func:`msg` function.
     """
     def test_init_verify(self):
         """
@@ -44,9 +43,9 @@ class TestLogppMessageSuite(unittest.TestCase):
         self.assertEqual(2, lpp_msg.detail['b'])
 
 
-class TestLogppHandlerSuite(unittest.TestCase):
+class TestLogppHandler(unittest.TestCase):
     """
-    This suite contains tests of the :py:class:`LogppHandler` class.
+    Tests of the :py:class:`LogppHandler` class.
     """
     def test_extend_log_emitted(self):
         """
@@ -82,4 +81,53 @@ class TestLogppHandlerSuite(unittest.TestCase):
 
         # Verify the number of messages handled matches the number sent.
         self.assertEqual(log_count, logpp_handler.handled_count)
+
+
+class TestLogppMixin(unittest.TestCase):
+    """
+    Tests of the :py:class:`LogppMixin` class.
+    """
+    def test_extend_getLogger_loggerNameIsClassName(self):
+        """
+        Arrange: Extend :py:class:`LogppMixin`.
+        Act: Instantiate and get the logger.
+        Assert: The logger's name reflects the class name.
+        """
+        class TestBase(object):
+            pass
+
+        class TestLogpp(TestBase, LogppMixin):
+            pass
+
+        test_logpp = TestLogpp()
+        logger = test_logpp.logger()
+
+        self.assertEqual(
+            f'{test_logpp.__class__.__module__}.' 
+            f'{test_logpp.__class__.__name__}',
+            logger.name
+        )
+
+    def test_extendWithLoggerName_getLogger_loggerNameIsClassName(self):
+        """
+        Arrange: Extend :py:class:`LogppMixin` with the `__loggername__`
+            class attribute.
+        Act: Instantiate and get the logger.
+        Assert: The logger's name reflects the `__loggername__` class attribute.
+        """
+        class TestBase(object):
+            pass
+
+        class TestLogpp(TestBase, LogppMixin):
+            __loggername__ = 'test_logger'
+            pass
+
+        test_logpp = TestLogpp()
+        logger = test_logpp.logger()
+
+        self.assertEqual(
+            'test_logger',
+            logger.name
+        )
+
 
