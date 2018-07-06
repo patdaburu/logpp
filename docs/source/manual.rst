@@ -99,3 +99,42 @@ should give you an idea of what to expect from such a facility.
 
     # Log a message that will be ignored by the custom handler.
     logging.info('This message will be ignored by the custom handler.')
+
+Using the :py:class:`logpp.logging.LogppMixin`
+----------------------------------------------
+
+Let's say you have a class that needs to log its activities.  Often you'll want
+to use a `named logger <https://docs.python.org/3/howto/logging-cookbook.html>`_.
+This can involve a few lines of boiler plate which can be a bit tedious to
+produce in every class.  By extending the :py:class:`logpp.logging.LogppMixin`
+your class gains the :py:func:`logpp.logging.LogppMixin.logger` function which
+returns a logger with a name that reflects the name of the class (though you
+can override that behavior by adding a `__loggername__` attribute to the class).
+
+.. code-block:: python
+
+    import logging
+    from logpp.logging import LogppMixin
+
+
+    # Just so we may demonstrate the use of the mixin, here's a base class
+    # that has nothing to do with logging from which we can inherit.
+    class SampleBaseClass(object):
+        pass
+
+
+    # Now let's create a class that extends the sample base class, but
+    # which also mixes in the logging facility.
+    class LoggableClass(SampleBaseClass, LogppMixin):
+
+        def log_something(self):
+            self.logger().info('Hello world!')
+
+
+    # Set up basic logging
+    logging.basicConfig(level=logging.INFO)
+
+    # Create a new instance of the mixed-in class...
+    loggable = LoggableClass()
+    # ...and ask it to log something.
+    loggable.log_something()
