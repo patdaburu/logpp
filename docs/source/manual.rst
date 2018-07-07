@@ -62,7 +62,7 @@ the :py:class:`logpp.logging.LogppHandler` and override the
 perform checks to make sure that only logging messages that are instances of
 the :py:class:`logpp.logging.LogppMessage` class are passed to this method.
 
-Putting it All Together
+Putting It All Together
 -----------------------
 
 The sample below briefly demonstrates the creation of a custom log handler and
