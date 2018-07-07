@@ -40,7 +40,7 @@ setup(
     # 'numpy>=1.13.3,<2',
     # 'measurement>=1.8.0,<2'
   ],
-  python_requires=">=0.0.1",
+  python_requires=">=3.6",
   license='MIT',
   author='Pat Daburu',
   author_email='pat@daburu.net',
