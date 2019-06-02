@@ -71,7 +71,7 @@ should give you an idea of what to expect from such a facility.
 .. code-block:: python
 
     import logging
-    from logpp.logging import msg, LogppMessage, LogppHandler
+    from logpp import msg, LogppMessage, LogppHandler
 
 
     # Create a custom handler.
@@ -114,7 +114,7 @@ can override that behavior by adding a `__loggername__` attribute to the class).
 .. code-block:: python
 
     import logging
-    from logpp.logging import LogppMixin
+    from logpp import LogppMixin
 
 
     # Just so we may demonstrate the use of the mixin, here's a base class

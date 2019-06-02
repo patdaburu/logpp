@@ -8,5 +8,5 @@
 python logging extensions
 """
 
-__version__ = '0.0.7'  #: the working version
-__release__ = '0.0.7'  #: the release version
+from .version import __version__, __release__
+from .logging import LogppHandler, LogppMessage, LogppMixin, msg
